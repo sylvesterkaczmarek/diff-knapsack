@@ -415,10 +415,13 @@ def _omega_value_and_choice(
 
   if regularizer == "shannon":
     v_max = max(v_skip, v_pick)
-    v_val = v_max + gamma * np.log(
-        np.exp((v_skip - v_max) / gamma) + np.exp((v_pick - v_max) / gamma)
-    )
-    q_ic = np.exp((v_pick - v_val) / gamma)
+    exp_skip = np.exp((v_skip - v_max) / gamma)
+    exp_pick = np.exp((v_pick - v_max) / gamma)
+    normalizer = exp_skip + exp_pick
+    v_val = v_max + gamma * np.log(normalizer)
+    # Normalize before adding the common offset back to the value: that
+    # addition may round away the log-normalizer for large-magnitude values.
+    q_ic = exp_pick / normalizer
     return v_val, q_ic
 
   elif regularizer == "gini":

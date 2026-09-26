@@ -58,3 +58,14 @@ either express or implied. See the licenses for the specific language governing
 permissions and limitations under those licenses.
 
 This is not an official Google product.
+
+## Tests
+
+With NumPy and Numba installed, run the numerical regression tests using:
+
+```sh
+NUMBA_NUM_THREADS=2 python -m unittest discover -s tests -v
+```
+
+The tests exercise the compiled forward, relaxed-selection, sampling and VJP
+operators, including exact subset-enumeration controls for Shannon regularization.
